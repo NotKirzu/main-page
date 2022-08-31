@@ -52,7 +52,7 @@
 
 <div id="aboutme" class="container-xl my-5 user-select-none">
   <div class="row justify-content-evenly">
-    <div class="col-md-5 animate__animated {animations ? "animate__zoomInLeft" : ""}">
+    <div class="col-md-5 animate__animated {animations ? "animate__fadeIn" : ""}">
       <div class="fs-2">
         Hey, I'm Kirzu! <span id="{animations ? "wave" : ""}">👋</span>
       </div>
@@ -81,7 +81,7 @@
         >{years} years</span>.
       </div>
     </div>
-    <div class="col-auto animate__animated animate__delay-1s {animations ? "animate__zoomInRight" : ""}">
+    <div class="col-auto animate__animated animate__delay-1s {animations ? "animate__fadeIn" : ""}">
       <Lanyard {...({ feather, darkMode })} />
     </div>
   </div>
