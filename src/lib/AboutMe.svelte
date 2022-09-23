@@ -11,7 +11,7 @@
     'software developer',
     'student',
     'freelancer',
-    'spanish translator',
+    'translator',
     'QA Tester'
   ].map((x) => x + '.');
   const birthdayDate = new Date(1136026800000);
@@ -24,7 +24,7 @@
   let imCurrent = 0;
 
   setInterval(() => {
-    imCurrent = imCurrent >= imList.length - 1 ? 0 : imCurrent + 1
+    imCurrent = imList.indexOf(imList.filter((x) => imList.indexOf(x) !== imCurrent)[Math.floor(Math.random() * imList.length - 2)]);
   }, 4000);
 
   function typewriter(node, { delay = 0, speed = 2 }) {
