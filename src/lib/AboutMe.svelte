@@ -8,12 +8,12 @@
   export let feather;
 
   const imList = [
-    'software developer',
-    'student',
-    'freelancer',
-    'translator',
-    'QA Tester'
-  ].map((x) => x + '.');
+    'software developer.',
+    'student.',
+    'freelancer.',
+    'translator.',
+    'QA Tester.'
+  ];
   const birthdayDate = new Date(1136026800000);
   const codingDate = new Date(1572584400000);
   const currentDate = new Date();
@@ -24,7 +24,7 @@
   let imCurrent = 0;
 
   setInterval(() => {
-    imCurrent = imList.indexOf(imList.filter((x) => imList.indexOf(x) !== imCurrent)[Math.floor(Math.random() * imList.length - 2)]);
+    imCurrent = imCurrent >= imList.length - 1 ? 0 : imCurrent + 1
   }, 4000);
 
   function typewriter(node, { delay = 0, speed = 2 }) {
