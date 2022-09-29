@@ -12,7 +12,8 @@
     'student.',
     'freelancer.',
     'translator.',
-    'QA Tester.'
+    'QA Tester.', 
+    'sleepwalker.'
   ];
   const birthdayDate = new Date(1136026800000);
   const codingDate = new Date(1572584400000);
