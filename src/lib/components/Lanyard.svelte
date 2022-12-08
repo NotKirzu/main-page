@@ -10,7 +10,7 @@
   let ws;
 
   onMount(() => {
-    if (!('WebSocket' in window || 'MozWebSocket' in window)) {
+    if (!("WebSocket" in window || "MozWebSocket" in window)) {
       console.error("WebSockets are not supported by this browser.");
       return;
     }
@@ -55,9 +55,9 @@
 
   function msToTime (ms) {
     ms = parseInt(ms);
-    const pad = (n) => ('00' + n).slice(-2);
+    const pad = (n) => ("00" + n).slice(-2);
     const hours = pad(ms / 3.6e6 | 0);
-    return (hours != '00' ? hours + ':' : '') + pad((ms % 3.6e6) / 6e4 | 0) + ':' + pad((ms % 6e4) / 1000 | 0);
+    return (hours != "00" ? hours + ":" : "") + pad((ms % 3.6e6) / 6e4 | 0) + ":" + pad((ms % 6e4) / 1000 | 0);
   }
 
   $: {
@@ -68,33 +68,33 @@
     if (userData?.spotify) {
       if (!songTimestamps) {
         songTimestamps = {};
-      } else if (songTimestamps['interval']) {
-        clearInterval(songTimestamps['interval']);
+      } else if (songTimestamps["interval"]) {
+        clearInterval(songTimestamps["interval"]);
       }
 
       // bruh
       const spotify = userData.spotify;
       
-      songTimestamps['name'] = spotify.song;
-      songTimestamps['interval'] = setInterval(() => {
+      songTimestamps["name"] = spotify.song;
+      songTimestamps["interval"] = setInterval(() => {
         const progress = Date.now() - spotify.timestamps.start;
         const untilEnd = spotify.timestamps.end - Date.now();
         const duration = progress + untilEnd;
         
         if (untilEnd > duration) {
-          clearInterval(songTimestamps['interval']);
+          clearInterval(songTimestamps["interval"]);
           return;
         }
 
-        songTimestamps['progress'] = progress;
-        songTimestamps['duration'] = duration;
-        songTimestamps['percentage'] = (progress / duration) * 100;
+        songTimestamps["progress"] = progress;
+        songTimestamps["duration"] = duration;
+        songTimestamps["percentage"] = (progress / duration) * 100;
       }, 1000);
     }
   }
 </script>
 
-<div class="card text-bg-{darkMode ? "dark" : "light"}" style="min-width: 20rem; max-width: 25rem;">
+<div class="card text-bg-{darkMode ? "dark" : "light"}" style="width: 21rem;">
   {#if !userData}
     <div class="row card-body">
       <div class="col-auto placeholder-glow">
@@ -102,10 +102,10 @@
       </div>
       <div class="col-6">
         <h5 class="placeholder-glow">
-          <span class="placeholder rounded col-6"></span>
+          <span class="placeholder rounded col-12"></span>
         </h5>
         <h5 class="placeholder-glow">
-          <span class="placeholder rounded col-3"></span>
+          <span class="placeholder rounded col-6"></span>
         </h5>
       </div>
     </div>
@@ -127,8 +127,19 @@
             on:click={() => {
               window.open("https://support.discord.com/hc/es/articles/360007553672-HypeSquad-House-Breakdown", "_blank");
             }}
+            on:keypress={null}
           >
             <img src="/hypesquad-bravery.svg" alt="hypesquad-badge">
+          </span>
+          <span
+            class="user-select-none" style="cursor: pointer;"
+            href="https://google.com"
+            on:click={() => {
+              window.open("https://support-dev.discord.com/hc/en-us/articles/10113997751447", "_blank");
+            }}
+            on:keypress={null}
+          >
+            <img src="/active-developer.svg" alt="activedev-badge">
           </span>
         </div>
       </div>
@@ -144,6 +155,7 @@
               on:click={() => {
                 window.open(`https://open.spotify.com/track/${userData.spotify.track_id}`, "_blank");
               }}
+              on:keypress={null}
             ></div>
           </div>
           <div id="spotify-content" class="col-6" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
@@ -158,19 +170,19 @@
             </span>
           </div>
           <div class="col-auto ms-auto my-auto">
-            {@html feather.icons['music'].toSvg({
-              width: 25, height: 25, 'stroke-width': 1.5
+            {@html feather.icons["music"].toSvg({
+              width: 25, height: 25, "stroke-width": 1.5
             })}
           </div>
           <div class="progress mt-4 mx-3" style="--bs-progress-bg: {darkMode ? "#747577" : "#d3d3d3"}; max-width: 90%; height: 5px;">
-            <div class="progress-bar bg-{darkMode ? "light" : "secondary"}" role="progressbar" aria-label="Progress bar" style="transform: translateX(-0.8rem) scaleX(1.15); max-width: 100%; width: {songTimestamps ? songTimestamps['percentage'] ?? '0' : '0'}%;"></div>
+            <div class="progress-bar bg-{darkMode ? "light" : "secondary"}" role="progressbar" aria-label="Progress bar" style="transform: translateX(-0.8rem) scaleX(1.15); max-width: 100%; width: {songTimestamps ? songTimestamps["percentage"] ?? "0" : "0"}%;"></div>
           </div>
           <div class="d-flex">
             <span class="fw-light">
-              {songTimestamps ? msToTime(songTimestamps['progress']) ?? '' : ''}
+              {songTimestamps ? msToTime(songTimestamps["progress"]) ?? "" : ""}
             </span>
             <span class="fw-light ms-auto">
-              {songTimestamps ? msToTime(songTimestamps['duration']) ?? '' : ''}
+              {songTimestamps ? msToTime(songTimestamps["duration"]) ?? "" : ""}
             </span>
           </div>
         </div>

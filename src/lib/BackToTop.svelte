@@ -14,9 +14,8 @@
   });
 
   function goToTop() {
-    window.scrollBy({
-      // @ts-ignore
-      top: -window.scrollMaxY,
+    window.scroll({
+      top: 0,
       // @ts-ignore
       behavior: animations ? "smooth" : "instant"
     });
@@ -25,7 +24,7 @@
 
 <button on:click={goToTop} class="{darkMode ? "text-bg-dark dark" : "text-bg-light light"}" id="backToTop" title="Go to top">
   {@html feather.icons["arrow-up"].toSvg({
-    width: 20, height: 18, "stroke-width": 2    
+    width: 20, height: 20, "stroke-width": 2    
   })}
 </button> 
 
@@ -33,13 +32,13 @@
   #backToTop {
     display: none;
     position: fixed;
-    bottom: 30px;
+    bottom: 35px;
     right: 50px;
     z-index: 99;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 15px;
+    padding: 13px;
     border-radius: 10px;
     font-size: 18px;
   }

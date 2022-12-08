@@ -33,9 +33,9 @@
   document.addEventListener("mouseup", clickSound);
 
   $: {
-    sounds = values && (values['sounds'] ?? true);
-    darkMode = values && (values['darkMode'] ?? true);
-    animations = values && (values['animations'] ?? true);
+    sounds = values && (values["sounds"] ?? true);
+    darkMode = values && (values["darkMode"] ?? true);
+    animations = values && (values["animations"] ?? true);
     document.body.style.backgroundColor = darkMode ? "#2b2f33" : "#EEEEEE";
   }
 </script>

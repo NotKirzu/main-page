@@ -8,12 +8,11 @@
   export let feather;
 
   const imList = [
-    'software developer.',
-    'student.',
-    'freelancer.',
-    'translator.',
-    'QA Tester.', 
-    'sleepwalker.'
+    "software developer.",
+    "student.",
+    "freelancer.",
+    "translator.",
+    "QA Tester."
   ];
   const birthdayDate = new Date(1136026800000);
   const codingDate = new Date(1572584400000);
@@ -42,7 +41,7 @@
   }
 
   $: {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipTriggerList = document.querySelectorAll("[data-bs-toggle='tooltip']");
     [...tooltipTriggerList].forEach((tooltipTriggerEl) => {
       const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
       if (tooltip) tooltip.dispose();
@@ -55,10 +54,10 @@
   <div class="row justify-content-evenly">
     <div class="col-md-5 animate__animated {animations ? "animate__fadeIn" : ""}">
       <div class="fs-2">
-        Hey, I'm Kirzu! <span id="{animations ? "wave" : ""}">👋</span>
+        Hey, I am Kirzu! <span id="{animations ? "wave" : ""}">👋</span>
       </div>
       <div class="fs-4 my-3">
-        I'm a
+        I am a
         {#key imCurrent}
           {#if animations}
             <span in:typewriter="{{ delay: 2000 }}" out:typewriter>{imList[imCurrent]}</span>
@@ -68,14 +67,14 @@
         {/key}
       </div>
       <div class="fs-5 my-3" style="z-index: 1000; line-height: 1.7;">
-        My name is Ricardo, but I'm also known as Rick or Kirzu.
+        My name is Ricardo, but I am also known as Rick or Kirzu.
         <br>
-        I'm <span
+        I am <span
           class="date {darkMode ? "text-white" : "text-dark"}"
           data-bs-toggle="tooltip"
           data-bs-title="Born date: 12/31/2005"
-        >{age} years old</span>, I'm from <span class="country">Panama</span>
-        and I've been coding for about <span
+        >{age} years old</span>, I was born in <span class="country">Panama</span>
+        and I have been coding for about <span
           class="date {darkMode ? "text-white" : "text-dark"}"
           data-bs-toggle="tooltip"
           data-bs-title="Start date: 11/2019"

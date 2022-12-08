@@ -16,6 +16,14 @@
     return values[key];
   }
 
+  function scrollTo (id) {
+    const element = document.getElementById(id);
+    if (element) {
+      // @ts-ignore
+      element.scrollIntoView({ block: "end", behavior: values["animations"] ? "smooth" : "instant" });
+    }
+  }
+
   window.addEventListener("scroll", () => {
     opacity = Math.min(0.8, (window.scrollY / 200) * 0.8);
   });
@@ -51,26 +59,26 @@
             })}
           </div>
           <ul class="{values["darkMode"] ? "bg-dark" : "bg-light"} py-3 dropdown-menu {values["animations"] ? "animateLeft" : ""}">
-            <li><a href="#aboutme" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><span on:click={() => scrollTo("aboutme")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["user"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
               About me
-            </a></li>
-            <li><a href="#projects" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            </span></li>
+            <li><span on:click={() => scrollTo("projects")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["code"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
               Projects
-            </a></li>
-            <li><a href="#contact" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            </span></li>
+            <li><span on:click={() => scrollTo("contact")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["mail"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
               Contact
-            </a></li>
+            </span></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a href="https://paypal.me/KirzuDev" target="_blank" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><a href="https://paypal.me/KirzuDev" rel="noreferrer" target="_blank" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["credit-card"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
@@ -81,7 +89,7 @@
                 })}
               </span>
             </a></li>
-            <li><a href="https://github.com/NotKirzu" target="_blank" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><a href="https://github.com/NotKirzu" rel="noreferrer" target="_blank" class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["github"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
@@ -106,6 +114,7 @@
             <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("darkMode")}
+                on:keypress={null}
               >
               {@html feather.icons["moon"].toSvg({
                 width: 20, height: 20, "stroke-width": 1.5
@@ -115,6 +124,7 @@
             <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("sounds")}
+                on:keypress={null}
               >
               {@html feather.icons["volume-2"].toSvg({
                 width: 20, height: 20, "stroke-width": 1.5
@@ -124,6 +134,7 @@
             <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("animations")}
+                on:keypress={null}
               >
               {@html feather.icons["image"].toSvg({
                 width: 20, height: 20, "stroke-width": 1.5
