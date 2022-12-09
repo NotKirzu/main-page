@@ -9,6 +9,7 @@
   };
 
   let opacity = 0;
+  let currentSection = "";
 
   function toggleValue (key) {
     values[key] = !values[key];
@@ -26,6 +27,15 @@
 
   window.addEventListener("scroll", () => {
     opacity = Math.min(0.8, (window.scrollY / 200) * 0.8);
+
+    const sections = ["aboutme", "projects", "contact"];
+    currentSection = sections.find((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 123 && rect.bottom >= 123;
+      }
+    });
   });
 
   onMount(() => {
@@ -59,19 +69,19 @@
             })}
           </div>
           <ul class="{values["darkMode"] ? "bg-dark" : "bg-light"} py-3 dropdown-menu {values["animations"] ? "animateLeft" : ""}">
-            <li><span on:click={() => scrollTo("aboutme")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><span on:click={() => scrollTo("aboutme")} on:keypress={null} class="dropdown-item {currentSection == "aboutme" ? "active" : ""} {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["user"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
               About me
             </span></li>
-            <li><span on:click={() => scrollTo("projects")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><span on:click={() => scrollTo("projects")} on:keypress={null} class="dropdown-item {currentSection == "projects" ? "active" : ""} {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["code"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
               Projects
             </span></li>
-            <li><span on:click={() => scrollTo("contact")} on:keypress={null} class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
+            <li><span on:click={() => scrollTo("contact")} on:keypress={null} class="dropdown-item {currentSection == "contact" ? "active" : ""} {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["mail"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
               })}
@@ -181,12 +191,12 @@
     transition: background-color 0.2s ease-out;
   }
 
-  .dark.dropdown-item:hover {
-    background-color: #343a40;
+  .dark.dropdown-item:hover, :global(.dark.active) {
+    background-color: #343a40 !important;
   }
 
-  .light.dropdown-item:hover {
-    background-color: #d3d3d3;
+  .light.dropdown-item:hover, :global(.light.active) {
+    background-color: #d3d3d3 !important;
   }
 
   .dropdown-item:focus, .dropdown-item:active {

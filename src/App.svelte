@@ -2,6 +2,7 @@
   import BirthdayEvent from "./lib/components/BirthdayEvent.svelte";
   import BackToTop from "./lib/BackToTop.svelte";
   import AboutMe from "./lib/AboutMe.svelte";
+  import Contact from "./lib/Contact.svelte";
   import Navbar from "./lib/Navbar.svelte";
   
   export let differenceInYears;
@@ -47,6 +48,7 @@
     {/if}
     <Navbar bind:values {feather} />
     <AboutMe {...({ bootstrap, feather, differenceInYears, darkMode, animations })} />
+    <Contact {...({ animations, feather, darkMode })} />
     <BackToTop {...({ animations, feather, darkMode })} />
   </div>
 </main>
