@@ -124,7 +124,7 @@
   }
 </script>
 
-<div id="contact" style="--animate-delay: 1.5s" class="container-md animate__animated {animations ? "animate__fadeIn" : ""}">
+<div id="contact" class="container-md animate__animated animate__delay-2s {animations ? "animate__fadeIn" : ""}">
   <div class="contact">
     <div class="container-contact {darkMode ? "dark" : "light"}">
       <div class="contact-pic js-tilt" data-tilt>
