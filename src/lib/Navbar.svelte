@@ -12,6 +12,7 @@
   let currentSection = "";
 
   function toggleValue (key) {
+    if (key == "darkMode") return true;
     values[key] = !values[key];
     localStorage.setItem("ui-" + key, values[key]);
     return values[key];
@@ -46,7 +47,7 @@
 
     values = {
       animations: getFromLocal("ui-animations") ?? true,
-      darkMode: getFromLocal("ui-darkMode") ?? (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ?? true,
+      darkMode: true, // getFromLocal("ui-darkMode") ?? (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ?? true,
       sounds: getFromLocal("ui-sounds") ?? true
     };
 
@@ -58,8 +59,8 @@
   });
 </script>
 
-<nav class="navbar sticky-top navbar-expand-lg {values["darkMode"] ? "bg-dark" : "bg-white"}" style="--bs-bg-opacity: {opacity};">
-  <div class="container-lg my-3">
+<nav class="navbar sticky-top navbar-expand-lg" style="background-color: rgba(2, 2, 2, {opacity});">
+  <div class="container-lg my-3" style='max-width: 90%;'>
     <div class="d-flex collapse navbar-collapse">
       <div class="me-auto mb-2 mb-lg-0">
         <div class="btn-group">
@@ -121,7 +122,7 @@
             })}
           </div>
           <ul class="{values["darkMode"] ? "bg-dark" : "bg-light"} py-3 dropdown-menu dropdown-menu-end {values["animations"] ? "animateRight" : ""}">
-            <li><div
+            <!-- <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("darkMode")}
                 on:keypress={null}
@@ -130,7 +131,7 @@
                 width: 20, height: 20, "stroke-width": 1.5
               })}
               Theme: {values["darkMode"] ? "Dark" : "Light"}
-            </div></li>
+            </div></li> -->
             <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("sounds")}

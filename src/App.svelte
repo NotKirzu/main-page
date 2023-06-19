@@ -37,18 +37,18 @@
     sounds = values && (values["sounds"] ?? true);
     darkMode = values && (values["darkMode"] ?? true);
     animations = values && (values["animations"] ?? true);
-    document.body.style.backgroundColor = darkMode ? "#2b2f33" : "#EEEEEE";
+    document.body.style.backgroundColor = darkMode ? "#0c0c0d" : "#EEEEEE";
   }
 </script>
 
 <main>
-  <div class="{darkMode ? "text-white" : "text-dark"}">
-    {#if isBirthday && animations}
-      <BirthdayEvent {createConfetti} />
-    {/if}
-    <Navbar bind:values {feather} />
+  <Navbar bind:values {feather} />
+  <div class="{darkMode ? "text-white" : "text-dark"}" style="margin: 0 auto; max-width: 90%;">
     <AboutMe {...({ bootstrap, feather, differenceInYears, darkMode, animations })} />
     <Contact {...({ animations, feather, darkMode })} />
     <BackToTop {...({ animations, feather, darkMode })} />
+    {#if isBirthday && animations}
+      <BirthdayEvent {createConfetti} />
+    {/if}
   </div>
 </main>

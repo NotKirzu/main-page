@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="col-auto animate__animated animate__delay-1s {animations ? "animate__fadeIn" : ""}">
-      <Lanyard {...({ feather, darkMode })} />
+      <Lanyard {...({ bootstrap, feather, darkMode, animations })} />
     </div>
   </div>
 </div>

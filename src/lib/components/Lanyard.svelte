@@ -1,8 +1,26 @@
 <script>
   import { onMount, onDestroy } from "svelte";
 
+  export let animations;
+  export let bootstrap;
   export let darkMode;
   export let feather;
+
+  const data = [{
+    id: 'hypesquad-badge',
+    icon: 'https://cdn.discordapp.com/badge-icons/8a88d63823d8a71cd5e390baa45efa02.png',
+    name: 'HypeSquad Bravery',
+    url: 'https://support.discord.com/hc/en-us/articles/360007553672-HypeSquad-House-Breakdown'
+  }, {
+    id: 'activedev-badge',
+    icon: 'https://cdn.discordapp.com/badge-icons/6bdc42827a38498929a4920da12695d9.png',
+    name: 'Active Developer',
+    url: 'https://support-dev.discord.com/hc/en-us/articles/10113997751447'
+  }, {
+    id: 'oldtag-badge',
+    icon: 'https://cdn.discordapp.com/badge-icons/6de6d34650760ba5551a79732e98ed60.png',
+    name: 'Originally known as Krz,#0203'
+  }];
 
   let songTimestamps;
   let heartbeat;
@@ -52,12 +70,27 @@
     ws.onclose = null;
     ws.close();
   });
-
-  function msToTime (ms) {
-    ms = parseInt(ms);
-    const pad = (n) => ("00" + n).slice(-2);
-    const hours = pad(ms / 3.6e6 | 0);
-    return (hours != "00" ? hours + ":" : "") + pad((ms % 3.6e6) / 6e4 | 0) + ":" + pad((ms % 6e4) / 1000 | 0);
+  
+  // Code from https://github.com/discordjs/discord.js/blob/75d91b52b3ff1ea5ec82b94d1c9c127d9eac3e55/packages/discord.js/src/structures/Presence.js#L354
+  function getAsset (appId, assetId) {
+    if (!assetId) return null;
+    if (assetId.includes(':')) {
+      const [platform, id] = assetId.split(':');
+      switch (platform) {
+        case 'mp':
+          return `https://media.discordapp.net/${id}`;
+        case 'spotify':
+          return `https://i.scdn.co/image/${id}`;
+        case 'youtube':
+          return `https://i.ytimg.com/vi/${id}/hqdefault_live.jpg`;
+        case 'twitch':
+          return `https://static-cdn.jtvnw.net/previews-ttv/live_user_${id}.png`;
+        default:
+          return null;
+      }
+    }
+    
+    return `https://cdn.discordapp.com/app-assets/${appId}/${assetId}.png?size=1024`
   }
 
   $: {
@@ -65,36 +98,16 @@
       userData = userData[import.meta.env.VITE_DISCORD_ID];
     }
 
-    if (userData?.spotify) {
-      if (!songTimestamps) {
-        songTimestamps = {};
-      } else if (songTimestamps["interval"]) {
-        clearInterval(songTimestamps["interval"]);
-      }
-
-      // bruh
-      const spotify = userData.spotify;
-      
-      songTimestamps["name"] = spotify.song;
-      songTimestamps["interval"] = setInterval(() => {
-        const progress = Date.now() - spotify.timestamps.start;
-        const untilEnd = spotify.timestamps.end - Date.now();
-        const duration = progress + untilEnd;
-        
-        if (untilEnd > duration) {
-          clearInterval(songTimestamps["interval"]);
-          return;
-        }
-
-        songTimestamps["progress"] = progress;
-        songTimestamps["duration"] = duration;
-        songTimestamps["percentage"] = (progress / duration) * 100;
-      }, 1000);
-    }
+    const tooltipTriggerList = document.querySelectorAll("[data-bs-toggle='tooltip']");
+    [...tooltipTriggerList].forEach((tooltipTriggerEl) => {
+      const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+      if (tooltip) tooltip.dispose();
+      new bootstrap.Tooltip(tooltipTriggerEl, { animation: !!animations })
+    });
   }
 </script>
 
-<div class="card text-bg-{darkMode ? "dark" : "light"}" style="width: 21rem;">
+<div class="card text-{darkMode ? "light" : "dark"}" style="border: 1px solid #171719; background-color: #111214; width: 21rem;">
   {#if !userData}
     <div class="row card-body">
       <div class="col-auto placeholder-glow">
@@ -117,85 +130,103 @@
           style="background-image: url(https://cdn.discordapp.com/avatars/{userData.discord_user.id}/{userData.discord_user.avatar}.{userData.discord_user.avatar.startsWith("a_") ? "gif" : "png"}?size=1024); background-repeat: round;"
         ></div>
       </div>
-      <div class="col-6">
+      <div class="col-6" style='width: 70%; margin-top: .8vh; display: inline-flex; justify-content: space-between;'>
         <h5 style="font-weight: bold;">
-          {userData.discord_user.username}<span class="ms-1" style="font-size: 17px; color: #B9BBB3 !important;">#{userData.discord_user.discriminator}</span>
+          {userData.discord_user.display_name}
+          <br>
+          <span style="font-size: 17px; color: #B9BBB3 !important;">@{userData.discord_user.username}</span>
         </h5>
-        <div>
-          <span
-            class="user-select-none" style="cursor: pointer;"
-            on:click={() => {
-              window.open("https://support.discord.com/hc/es/articles/360007553672-HypeSquad-House-Breakdown", "_blank");
-            }}
-            on:keypress={null}
-          >
-            <img src="/hypesquad-bravery.svg" alt="hypesquad-badge">
-          </span>
-          <span
-            class="user-select-none" style="cursor: pointer;"
-            href="https://google.com"
-            on:click={() => {
-              window.open("https://support-dev.discord.com/hc/en-us/articles/10113997751447", "_blank");
-            }}
-            on:keypress={null}
-          >
-            <img src="/active-developer.svg" alt="activedev-badge">
-          </span>
+        <div style='padding-bottom: 25px; height: 24px; border-radius: 7px; background-color: #020202; border: 1px solid #212529;'>
+          {#each data as badge}
+            <span
+              class="date {darkMode ? "text-white" : "text-dark"}"
+              data-bs-toggle="tooltip"
+              data-bs-title="{badge.name}"
+            >
+              <span
+                class="user-select-none" style="margin: 3px; display: inline-flex; width: 20px; height: 20px; cursor: pointer;"
+                on:click={() => {
+                  if (badge.url) {
+                    window.open(badge.url, "_blank");
+                  }
+                }}
+                on:keypress={null}
+              >
+                <img style="user-select: none;" width="20" height="20" src={badge.icon} alt={badge.id}>
+              </span>
+            </span>
+          {/each}
         </div>
       </div>
     </div>
-    {#if (userData.spotify && userData.listening_to_spotify)}
-      <hr class="mx-2">
-      <div id="spotify-container">
-        <div class="row card-body">
-          <div class="col-auto">
-            <div
-              class="icon"
-              style="background-image: url({userData.spotify.album_art_url}); background-repeat: round; cursor: pointer;"
-              on:click={() => {
-                window.open(`https://open.spotify.com/track/${userData.spotify.track_id}`, "_blank");
-              }}
-              on:keypress={null}
-            ></div>
-          </div>
-          <div id="spotify-content" class="col-6" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-            <span class="fw-bold">{userData.spotify.song}</span>
-            <br>
-            <span class="fw-light" style="white-space: initial;">
-              By {userData.spotify.artist.replace(/;/g, ",")}
-            </span>
-            <br>
-            <span class="fw-light">
-              On {userData.spotify.album}
-            </span>
-          </div>
-          <div class="col-auto ms-auto my-auto">
-            {@html feather.icons["music"].toSvg({
-              width: 25, height: 25, "stroke-width": 1.5
-            })}
-          </div>
-          <div class="progress mt-4 mx-3" style="--bs-progress-bg: {darkMode ? "#747577" : "#d3d3d3"}; max-width: 90%; height: 5px;">
-            <div class="progress-bar bg-{darkMode ? "light" : "secondary"}" role="progressbar" aria-label="Progress bar" style="transform: translateX(-0.8rem) scaleX(1.15); max-width: 100%; width: {songTimestamps ? songTimestamps["percentage"] ?? "0" : "0"}%;"></div>
-          </div>
-          <div class="d-flex">
-            <span class="fw-light">
-              {songTimestamps ? msToTime(songTimestamps["progress"]) ?? "" : ""}
-            </span>
-            <span class="fw-light ms-auto">
-              {songTimestamps ? msToTime(songTimestamps["duration"]) ?? "" : ""}
-            </span>
+    {#if userData.activities.length}
+      {#each userData.activities as activity, i}
+        {#if i == 0}
+          <hr class="mx-2">
+        {/if}
+        <div id="activity-container">
+          <div class="row card-body">
+            <div class="col-auto">
+              <div style='position: relative; width: 74px; height: 74px;'>
+                <span
+                  data-bs-toggle="{activity.assets.large_text ? "tooltip" : ""}"
+                  data-bs-title="{activity.assets.large_text}"
+                  style='position: absolute; width: 74px; height: 74px;'
+                >
+                  <img
+                    alt="large-image"
+                    width="74"
+                    height="74"
+                    style='border-radius: 5px; position: absolute;'
+                    src="{getAsset(activity.application_id, activity.assets.large_image)}"
+                  />
+                </span>
+                <div style='position: absolute; top: 70%; left: 70%; background-color: #111214; border-radius: 50%;'>
+                  <span
+                    data-bs-toggle="{activity.assets.small_text ? "tooltip" : ""}"
+                    data-bs-title="{activity.assets.small_text}"
+                  >
+                    <img
+                      alt="small-image"
+                      width="25"
+                      height="25"
+                      style='border-radius: 50%;'
+                      src="{getAsset(activity.application_id, activity.assets.small_image)}"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id="activity-content" class="col-{['YouTube Music', 'Visual Studio Code'].includes(activity.name) ? '6' : '8'}" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+              <span class="fw-bold">{activity.name}</span>
+              <br>
+              <span class="fw-light">
+                {activity.details ?? ''}
+              </span>
+              <br>
+              <span class="fw-light">
+                {activity.state ?? ''}
+              </span>
+            </div>
+            {#if ['YouTube Music', 'Visual Studio Code'].includes(activity.name)}
+              <div class="col-auto ms-auto my-auto">
+                {@html feather.icons[activity.name === 'YouTube Music' ? "music" : "code"].toSvg({
+                  width: 25, height: 25, "stroke-width": 1.5
+                })}
+              </div>
+            {/if}
           </div>
         </div>
-      </div>
+      {/each}
     {/if}
   {/if}
 </div>
 
 <style>
-  #spotify-container {
+  #activity-container {
     transform: translateY(-.5rem);
   }
-  #spotify-content {
+  #activity-content {
     transform: translateY(-.1rem);
   }
 

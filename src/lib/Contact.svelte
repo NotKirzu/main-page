@@ -126,9 +126,9 @@
 
 <div id="contact" class="container-md animate__animated animate__delay-2s {animations ? "animate__fadeIn" : ""}">
   <div class="contact">
-    <div class="container-contact {darkMode ? "dark" : "light"}">
+    <div class="container-contact {darkMode ? "dark" : "light"}" style="border: 1px solid #171719; background-color: #111214;">
       <div class="contact-pic js-tilt" data-tilt>
-        <img src="/contact-{darkMode ? "dark" : "light"}.png" alt="contact">
+        <img style="pointer-events: none; user-select: none;" src="/contact-{darkMode ? "dark" : "light"}.png" alt="contact">
       </div>
 
       <form class="contact-form validate-form">
@@ -241,14 +241,6 @@
     align-items: center;
   }
 
-  .dark.container-contact {
-    background-color: #212529;
-  }
-
-  .light.container-contact {
-    background-color: #f8f9fa;
-  }
-
   .container-contact {
     width: 1163px;
     border-radius: 10px;
@@ -298,22 +290,22 @@
 
   input.input {
     height: 50px;
-    border-radius: 25px;
+    border-radius: 15px;
     padding: 0 30px 0 50px;
   }
   
   input.input + .shadow-input {
-    border-radius: 25px;
+    border-radius: 15px;
   }
 
   textarea.input {
     min-height: 150px;
-    border-radius: 25px;
-    padding: 12px 30px;
+    border-radius: 15px;
+    padding: 12px 50px;
   }
   
   textarea.input + .shadow-input {
-    border-radius: 25px;
+    border-radius: 15px;
   }
 
   .wrap-input {
@@ -329,7 +321,7 @@
   }
 
   .dark.input {
-    background: #666;
+    background: #060607;
     color: #e6e6e6;
   }
 
