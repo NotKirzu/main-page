@@ -21,8 +21,8 @@
     icon: 'https://cdn.discordapp.com/badge-icons/6de6d34650760ba5551a79732e98ed60.png',
     name: 'Originally known as Krz,#0203'
   }];
+  const activeTooltips = [];
 
-  let songTimestamps;
   let heartbeat;
   let userData;
   let ws;
@@ -97,13 +97,24 @@
     if (userData && userData[import.meta.env.VITE_DISCORD_ID]) {
       userData = userData[import.meta.env.VITE_DISCORD_ID];
     }
+    
+    setTimeout(() => {
+      const tooltipTriggerList = document.querySelectorAll(".lanyard-span[data-bs-toggle='tooltip']");
+      [...tooltipTriggerList].forEach((tooltipTriggerEl) => {
+        const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+        let wasShowing;
 
-    const tooltipTriggerList = document.querySelectorAll("[data-bs-toggle='tooltip']");
-    [...tooltipTriggerList].forEach((tooltipTriggerEl) => {
-      const tooltip = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
-      if (tooltip) tooltip.dispose();
-      new bootstrap.Tooltip(tooltipTriggerEl, { animation: !!animations })
-    });
+        if (tooltip) {
+          wasShowing = tooltip._isShown();
+          tooltip.dispose();
+        }
+
+        const newTooltip = new bootstrap.Tooltip(tooltipTriggerEl, { animation: !!animations });
+        if (wasShowing) {
+          newTooltip.show();
+        }
+      });
+    }, 50)
   }
 </script>
 
@@ -139,21 +150,18 @@
         <div style='padding-bottom: 25px; height: 24px; border-radius: 7px; background-color: #020202; border: 1px solid #212529;'>
           {#each data as badge}
             <span
-              class="date {darkMode ? "text-white" : "text-dark"}"
+              class="lanyard-span user-select-none"
+              style="margin: 3px; display: inline-flex; width: 20px; height: 20px; cursor: pointer;"
               data-bs-toggle="tooltip"
               data-bs-title="{badge.name}"
+              on:click={() => {
+                if (badge.url) {
+                  window.open(badge.url, "_blank");
+                }
+              }}
+              on:keypress={null}
             >
-              <span
-                class="user-select-none" style="margin: 3px; display: inline-flex; width: 20px; height: 20px; cursor: pointer;"
-                on:click={() => {
-                  if (badge.url) {
-                    window.open(badge.url, "_blank");
-                  }
-                }}
-                on:keypress={null}
-              >
-                <img style="user-select: none;" width="20" height="20" src={badge.icon} alt={badge.id}>
-              </span>
+              <img style="user-select: none;" width="20" height="20" src={badge.icon} alt={badge.id}>
             </span>
           {/each}
         </div>
@@ -166,9 +174,10 @@
         {/if}
         <div id="activity-container">
           <div class="row card-body">
-            <div class="col-auto">
+            <div class="col-auto" style='width: 26%;'>
               <div style='position: relative; width: 74px; height: 74px;'>
                 <span
+                  class="lanyard-span"
                   data-bs-toggle="{activity.assets.large_text ? "tooltip" : ""}"
                   data-bs-title="{activity.assets.large_text}"
                   style='position: absolute; width: 74px; height: 74px;'
@@ -183,21 +192,23 @@
                 </span>
                 <div style='position: absolute; top: 70%; left: 70%; background-color: #111214; border-radius: 50%;'>
                   <span
+                    class="lanyard-span"
                     data-bs-toggle="{activity.assets.small_text ? "tooltip" : ""}"
                     data-bs-title="{activity.assets.small_text}"
+                    style="width: 25px; height: 25px; display: inline-block;"
                   >
                     <img
                       alt="small-image"
                       width="25"
                       height="25"
-                      style='border-radius: 50%;'
+                      style='border-radius: 50%; position: absolute; border: 2px solid #111214; background-color: #111214;'
                       src="{getAsset(activity.application_id, activity.assets.small_image)}"
                     />
                   </span>
                 </div>
               </div>
             </div>
-            <div id="activity-content" class="col-{['YouTube Music', 'Visual Studio Code'].includes(activity.name) ? '6' : '8'}" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+            <div id="activity-content" style="width: {['YouTube Music', 'Visual Studio Code'].includes(activity.name) ? "58.9" : "70"}%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
               <span class="fw-bold">{activity.name}</span>
               <br>
               <span class="fw-light">

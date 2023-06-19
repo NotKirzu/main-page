@@ -45,18 +45,26 @@
     button.innerHTML = "Sending... " + feather.icons["loader"].toSvg({ class: "sent-icon icon-loader", height: 20, width: 20 });
     button.classList.add("button-loading");
 
-    const request = await fetch('https://mailer.krzu.me', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        subject,
-        message
-      })
-    });
+    let request;
+
+    try {
+      request = await fetch('https://mailer.krzu.me', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message
+        })
+      });
+    } catch (err) {
+      request = {
+        status: 500
+      };
+    }
 
     button.classList.remove("button-loading");
     if (request.status == 204) {
@@ -177,7 +185,7 @@
         </div>
   
         <div class="container-contact-form-btn">
-          <button on:click|preventDefault={validateData} class="contact-form-btn {animations ? "hover" : ""} {darkMode ? "dark" : "light"}">
+          <button on:click|preventDefault={validateData} class="contact-form-btn {animations ? "hover animations" : ""} {darkMode ? "dark" : "light"}">
             <span>
               Send message
               <span class="send-icon">
@@ -364,6 +372,13 @@
     }
   }
 
+  .animations {
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+  }
+
   .container-contact-form-btn {
     display: -webkit-box;
     display: -webkit-flex;
@@ -377,11 +392,11 @@
   .contact-form-btn {
     min-width: 193px;
     height: 50px;
-    border-radius: 25px;
-    background: #3ee7db;
+    border-radius: 8px;
+    background: #5865f2;
     font-size: 15px;
     line-height: 1.5;
-    color: #333;
+    color: #fff;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -390,11 +405,6 @@
     justify-content: center;
     align-items: center;
     padding: 0 25px;
-
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s;
   }
 
   .light.hover:hover {
@@ -402,9 +412,13 @@
     color: #666;
   }
 
-  .dark.hover:hover {
-    background: #666;
+  .contact-form-btn.dark.hover:hover {
+    background: #4752c4;
     color: #fff;
+  }
+
+  .contact-form-btn.dark.hover:active {
+    background: #3c45a5;
   }
 
   @media (max-width: 1200px) {
@@ -495,10 +509,6 @@
     pointer-events: none;
     color: #aaa;
     font-size: 15px;
-    -webkit-transition: all .4s;
-    -o-transition: all .4s;
-    -moz-transition: all .4s;
-    transition: all .4s
   }
   
   .input:focus+.shadow-input+.symbol-input {
@@ -514,12 +524,12 @@
     cursor: default !important;
   }
 
-  :global(.button-fail) {
+  :global(button.button-fail) {
+    cursor: not-allowed !important;
     background-color: rgb(184, 70, 70) !important;
     transform: rotate(0deg);
     border-radius: 50%;
     min-width: 5px !important;
-    cursor: default !important;
   }
 
   :global(.sent-icon) {

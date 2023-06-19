@@ -69,7 +69,7 @@
               width: 18, height: 18, "stroke-width": 1
             })}
           </div>
-          <ul class="{values["darkMode"] ? "bg-dark" : "bg-light"} py-3 dropdown-menu {values["animations"] ? "animateLeft" : ""}">
+          <ul class="{values["darkMode"] ? "nav-bg-dark" : "nav-bg-light"} py-3 dropdown-menu {values["animations"] ? "animateLeft" : ""}">
             <li><span on:click={() => scrollTo("aboutme")} on:keypress={null} class="dropdown-item {currentSection == "aboutme" ? "active" : ""} {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2">
               {@html feather.icons["user"].toSvg({
                 width: 18, height: 18, "stroke-width": 1
@@ -121,7 +121,7 @@
               width: 18, height: 18, "stroke-width": 1
             })}
           </div>
-          <ul class="{values["darkMode"] ? "bg-dark" : "bg-light"} py-3 dropdown-menu dropdown-menu-end {values["animations"] ? "animateRight" : ""}">
+          <ul class="{values["darkMode"] ? "nav-bg-dark" : "nav-bg-light"} py-3 dropdown-menu dropdown-menu-end {values["animations"] ? "animateRight" : ""}">
             <!-- <li><div
                 class="dropdown-item {values["animations"] ? "animated" : ""} {values["darkMode"] ? "text-light dark" : "text-black light"} py-2"
                 on:click={() => toggleValue("darkMode")}
@@ -218,5 +218,9 @@
 
   .external-icon {
     transform: translateY(-.17rem);
+  }
+
+  .nav-bg-dark {
+    background-color: #1e1f22 !important;
   }
 </style>
