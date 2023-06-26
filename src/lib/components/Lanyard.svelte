@@ -262,7 +262,7 @@
                 <span title="{activity.details}" class="fw-bold">{activity.details}</span>
                 <br />
                 <span title="{activity.state}" style="white-space: normal;" class="fw-light">
-                  by {activity.state.replace(";", ",") ?? ""}
+                  by {activity.state.replace(/;/g, ",") ?? ""}
                 </span>
                 <br />
                 <span title="{activity.assets.large_text}" class="fw-light">
