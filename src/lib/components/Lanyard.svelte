@@ -199,8 +199,8 @@
         </div>
       </div>
     </div>
-    {#if userData.activities.length}
-      {#each userData.activities as activity, i}
+    {#if userData.activities.filter((x) => x.type !== 4).length}
+      {#each userData.activities.filter((x) => x.type !== 4) as activity, i}
         {#if i == 0}
           <hr class="mx-2" />
         {/if}
