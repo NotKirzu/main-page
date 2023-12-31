@@ -14,7 +14,7 @@
     "translator.",
     "QA Tester."
   ];
-  const birthdayDate = new Date(1136026800000);
+  const birthdayDate = new Date(1136005200000);
   const codingDate = new Date(1572584400000);
   const currentDate = new Date();
 
